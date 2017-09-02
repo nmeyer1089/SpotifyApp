@@ -16,7 +16,21 @@ import okhttp3.Response;
 
 public class OkHttpWrapper extends AsyncTask<Request, Void, String> {
 
-    static OkHttpClient client = new OkHttpClient();
+    public OkHttpClient client = new OkHttpClient();
+    public String authToken;
+
+    public OkHttpWrapper(String auth) {
+        authToken = auth;
+    }
+
+    protected void authAsyncGet(String url) {
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + authToken)
+                .build();
+
+        this.execute(request);
+    }
 
     protected String doInBackground(Request... requests) {
         try {
@@ -33,11 +47,4 @@ public class OkHttpWrapper extends AsyncTask<Request, Void, String> {
         return;
     }
 
-    public static String get(String url) {
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-        new OkHttpWrapper().execute(request);
-        return "";
-    }
 }

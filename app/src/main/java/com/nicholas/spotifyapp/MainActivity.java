@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.nicholas.httpwrapper.GetPlaylists;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
@@ -30,7 +31,7 @@ public class MainActivity extends Activity implements
 
 
     private static final String CLIENT_ID = "24826f28c02c4c47aede12dcd3933607";
-    private static final String CLIENT_SECRET = "4f627b73876b4b2584ef36359883b48a";
+    private static final String CLIENT_SECRET = "";
     private static final String REDIRECT_URI = "http://localhost:8888/callback/";
     private static final String CODED_REDIRECT_URI = "https%3A%2F%2Flocalhost%3A8888%2Fcallback%2F";
 
@@ -41,28 +42,6 @@ public class MainActivity extends Activity implements
     // Request code that will be used to verify if the result comes from correct activity
     // Can be any integer
     private static final int REQUEST_CODE = 1337;
-
-
-
-    OkHttpClient client = new OkHttpClient();
-
-    String run(String url) {
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            return response.body().string();
-        } catch (Exception e) {
-            Log.d("Except", "Catch trying newCall");
-        }
-        return "Expection";
-    }
-
-    String response = run("https://raw.github.com/square/okhttp/master/README.md");
-
-    String pause = "";
 
 
 
@@ -92,6 +71,11 @@ public class MainActivity extends Activity implements
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
                 Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
+
+                //test
+                GetPlaylists getPlaylists = new GetPlaylists(response.getAccessToken());
+                getPlaylists.getCurrentUserPlaylists();
+
                 Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
                     @Override
                     public void onInitialized(SpotifyPlayer spotifyPlayer) {
