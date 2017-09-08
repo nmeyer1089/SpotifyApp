@@ -66,6 +66,7 @@ public class MainActivity extends Activity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
+
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
@@ -73,7 +74,7 @@ public class MainActivity extends Activity implements
                 Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
 
                 //test
-                GetPlaylists getPlaylists = new GetPlaylists(response.getAccessToken());
+                GetPlaylists getPlaylists = new GetPlaylists(this, response.getAccessToken());
                 getPlaylists.getCurrentUserPlaylists();
 
                 Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {

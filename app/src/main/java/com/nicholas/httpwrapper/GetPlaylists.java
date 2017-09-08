@@ -1,8 +1,12 @@
 package com.nicholas.httpwrapper;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.nicholas.models.PlaylistModel;
+import com.nicholas.spotifyapp.PlaylistListActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,9 +22,11 @@ public class GetPlaylists extends OkHttpWrapper {
 
     public static final String CURRENT_USER_PLAYLISTS_URL =
             "https://api.spotify.com/v1/me/playlists";
+    public static final String PLAYLISTS_JSON_KEY =
+            "GetPlaylists.JsonKey";
 
-    public GetPlaylists(String auth) {
-        super(auth);
+    public GetPlaylists(Activity call, String auth) {
+        super(call, auth);
     }
 
     public void getCurrentUserPlaylists() {
@@ -29,22 +35,10 @@ public class GetPlaylists extends OkHttpWrapper {
 
     @Override
     protected void onPostExecute(String response) {
-        List<PlaylistModel> playlistList = new ArrayList<>();
-        try {
-            JSONObject jsonResponse = new JSONObject(response);
-
-            int total = jsonResponse.getInt("total");
-            for (int i = 0; i < total; i++) {
-                PlaylistModel playlist = new PlaylistModel();
-                JSONObject playlistJson = jsonResponse.getJSONArray("items")
-                        .getJSONObject(i);
-                playlist.name = playlistJson.getString("name");
-                playlist.id = playlistJson.getString("id");
-                playlistList.add(playlist);
-            }
-        } catch ( JSONException e) {
-            Log.d("GetPlaylists oPE", "while parsing response into JSON");
-        }
+        //start playlist list activity
+        Intent intent = new Intent(caller, PlaylistListActivity.class);
+        intent.putExtra(PLAYLISTS_JSON_KEY, response);
+        caller.startActivity(intent);
         return;
     }
 }

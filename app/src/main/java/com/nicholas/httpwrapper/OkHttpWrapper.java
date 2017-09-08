@@ -4,6 +4,8 @@ package com.nicholas.httpwrapper;
  * Created by Nicholas on 8/30/2017.
  */
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -18,9 +20,11 @@ public class OkHttpWrapper extends AsyncTask<Request, Void, String> {
 
     public OkHttpClient client = new OkHttpClient();
     public String authToken;
+    public Activity caller;
 
-    public OkHttpWrapper(String auth) {
+    public OkHttpWrapper(Activity call, String auth) {
         authToken = auth;
+        caller = call;
     }
 
     protected void authAsyncGet(String url) {
