@@ -10,6 +10,7 @@ import com.nicholas.States.PlayerState;
 import com.nicholas.httpwrapper.GetPlaylists;
 import com.nicholas.httpwrapper.GetUser;
 import com.nicholas.httpwrapper.OkHttpWrapper;
+import com.nicholas.managers.FileManager;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
@@ -46,15 +47,14 @@ public class MainActivity extends Activity implements
     // Can be any integer
     private static final int REQUEST_CODE = 1337;
 
-
-
-
     private Player mPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FileManager.context = this;
 
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                 AuthenticationResponse.Type.TOKEN,
@@ -130,7 +130,13 @@ public class MainActivity extends Activity implements
     public void onLoggedIn() {
         Log.d("MainActivity", "User logged in");
 
-        mPlayer.playUri(null, "spotify:track:2TpxZ7JUBn3uw46aR7qd6V", 0, 0);
+        String trackId = "2TpxZ7JUBn3uw46aR7qd6V";
+        String temp = FileManager.readFile("lastSongId.txt");
+        if (temp != null && temp.length() > 0) {
+            trackId = temp;
+        }
+
+        mPlayer.playUri(null, "spotify:track:" + trackId, 0, 0);
     }
 
     @Override

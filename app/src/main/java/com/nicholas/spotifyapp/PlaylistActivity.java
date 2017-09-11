@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.nicholas.States.PlayerState;
 import com.nicholas.httpwrapper.GetPlaylist;
+import com.nicholas.managers.FileManager;
 import com.nicholas.models.PlaylistModel;
 import com.nicholas.models.SongModel;
 
@@ -52,6 +53,7 @@ public class PlaylistActivity extends ListActivity {
     public void onListItemClick(ListView l, View v, int position, long id) {
         String trackId = songs.get(position).id;
         PlayerState.player.playUri(null, "spotify:track:" + trackId, 0, 0);
+        FileManager.writeFile("lastSongId.txt", trackId);
     }
 
     private ArrayList<SongModel> parsePlaylistString(String jsonString) {
