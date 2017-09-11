@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.nicholas.States.PlayerState;
 import com.nicholas.httpwrapper.GetPlaylists;
+import com.nicholas.httpwrapper.GetUser;
+import com.nicholas.httpwrapper.OkHttpWrapper;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
@@ -73,9 +76,9 @@ public class MainActivity extends Activity implements
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
                 Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
 
-                //test
-                GetPlaylists getPlaylists = new GetPlaylists(this, response.getAccessToken());
-                getPlaylists.getCurrentUserPlaylists();
+                OkHttpWrapper.authToken = response.getAccessToken();
+                GetUser getUser = new GetUser(this);
+                getUser.getCurrentUser();
 
                 Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
                     @Override
@@ -83,6 +86,8 @@ public class MainActivity extends Activity implements
                         mPlayer = spotifyPlayer;
                         mPlayer.addConnectionStateCallback(MainActivity.this);
                         mPlayer.addNotificationCallback(MainActivity.this);
+
+                        PlayerState.player = mPlayer;
                     }
 
                     @Override

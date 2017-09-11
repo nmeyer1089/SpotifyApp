@@ -9,6 +9,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -19,11 +21,15 @@ import okhttp3.Response;
 public class OkHttpWrapper extends AsyncTask<Request, Void, String> {
 
     public OkHttpClient client = new OkHttpClient();
-    public String authToken;
+    public static String authToken;
+    public static JSONObject userJson;
     public Activity caller;
 
     public OkHttpWrapper(Activity call, String auth) {
         authToken = auth;
+        caller = call;
+    }
+    public OkHttpWrapper(Activity call) {
         caller = call;
     }
 

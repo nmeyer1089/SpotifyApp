@@ -1,30 +1,20 @@
 package com.nicholas.spotifyapp;
 
-import android.app.ActionBar;
 import android.app.ListActivity;
-import android.app.LoaderManager;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.SimpleCursorAdapter;
 
+import com.nicholas.httpwrapper.GetPlaylist;
 import com.nicholas.models.PlaylistModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.nicholas.httpwrapper.GetPlaylists.PLAYLISTS_JSON_KEY;
 
@@ -48,7 +38,7 @@ public class PlaylistListActivity extends ListActivity {
 
         Intent intent = getIntent();
         String response = intent.getStringExtra(PLAYLISTS_JSON_KEY);
-        playlists = parsePlaylistString(response);
+        playlists = parsePlaylistListString(response);
 
         // Create an empty adapter we will use to display the loaded data.
         // We pass null for the cursor, then update it in onLoadFinished()
@@ -62,10 +52,12 @@ public class PlaylistListActivity extends ListActivity {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        // Do something when a list item is clicked
+        PlaylistModel selected = playlists.get(position);
+        GetPlaylist getPlaylist = new GetPlaylist(this);
+        getPlaylist.getCurrentUserPlaylist(selected);
     }
 
-    private ArrayList<PlaylistModel> parsePlaylistString(String jsonString) {
+    private ArrayList<PlaylistModel> parsePlaylistListString(String jsonString) {
         ArrayList<PlaylistModel> playlistList = new ArrayList<>();
         try {
             JSONObject jsonResponse = new JSONObject(jsonString);
@@ -77,6 +69,7 @@ public class PlaylistListActivity extends ListActivity {
                         .getJSONObject(i);
                 playlist.name = playlistJson.getString("name");
                 playlist.id = playlistJson.getString("id");
+                playlist.ownerId = playlistJson.getJSONObject("owner").getString("id");
                 playlistList.add(playlist);
             }
         } catch ( JSONException e) {

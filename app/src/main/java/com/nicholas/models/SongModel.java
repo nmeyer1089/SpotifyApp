@@ -1,16 +1,15 @@
 package com.nicholas.models;
 
 /**
- * Created by Nicholas on 9/2/2017.
+ * Created by Nicholas on 9/8/2017.
  */
 
-public class PlaylistModel {
-    //playlist id
-    public String id;
-    //playlist name
+public class SongModel {
     public String name;
-    //owner's id
-    public String ownerId;
+    public String id;
+    public int durationMs;
+    public String artist;
+    public String album;
 
     @Override
     public String toString() {
