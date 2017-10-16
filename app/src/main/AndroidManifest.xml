@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,9 +22,9 @@
         <activity
             android:name="com.spotify.sdk.android.authentication.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".PlaylistListActivity" />
+        <activity android:name=".PlaylistsActivity" />
         <activity
-            android:name=".PlaylistActivity"
+            android:name=".EditPlaylistActivity"
             android:label="@string/title_activity_playlist"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

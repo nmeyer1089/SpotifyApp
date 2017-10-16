@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.nicholas.States.PlayerState;
-import com.nicholas.httpwrapper.GetPlaylists;
 import com.nicholas.httpwrapper.GetUser;
 import com.nicholas.httpwrapper.OkHttpWrapper;
 import com.nicholas.managers.FileManager;
@@ -22,14 +21,7 @@ import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
 
-import java.io.IOException;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
-public class MainActivity extends Activity implements
+public class LoginActivity extends Activity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback
 {
 
@@ -52,7 +44,7 @@ public class MainActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         FileManager.context = this;
 
@@ -64,7 +56,7 @@ public class MainActivity extends Activity implements
 
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
 
-        Log.d("MainActivity", "ONCREATE METHOD CALLED");
+        Log.d("LoginActivity", "ONCREATE METHOD CALLED");
     }
 
     @Override
@@ -86,15 +78,15 @@ public class MainActivity extends Activity implements
                     @Override
                     public void onInitialized(SpotifyPlayer spotifyPlayer) {
                         mPlayer = spotifyPlayer;
-                        mPlayer.addConnectionStateCallback(MainActivity.this);
-                        mPlayer.addNotificationCallback(MainActivity.this);
+                        mPlayer.addConnectionStateCallback(LoginActivity.this);
+                        mPlayer.addNotificationCallback(LoginActivity.this);
 
                         PlayerState.player = mPlayer;
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
-                        Log.e("MainActivity", "Could not initialize player: " + throwable.getMessage());
+                        Log.e("LoginActivity", "Could not initialize player: " + throwable.getMessage());
                     }
                 });
             }
@@ -105,13 +97,13 @@ public class MainActivity extends Activity implements
     protected void onDestroy() {
         // VERY IMPORTANT! This must always be called or else you will leak resources
         Spotify.destroyPlayer(this);
-        Log.d("MainActivity", "ONDESTROY METHOD CALLED");
+        Log.d("LoginActivity", "ONDESTROY METHOD CALLED");
         super.onDestroy();
     }
 
     @Override
     public void onPlaybackEvent(PlayerEvent playerEvent) {
-        Log.d("MainActivity", "Playback event received: " + playerEvent.name());
+        Log.d("LoginActivity", "Playback event received: " + playerEvent.name());
         switch (playerEvent) {
             // Handle event type as necessary
             default:
@@ -121,7 +113,7 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onPlaybackError(Error error) {
-        Log.d("MainActivity", "Playback error received: " + error.name());
+        Log.d("LoginActivity", "Playback error received: " + error.name());
         switch (error) {
             // Handle error type as necessary
             default:
@@ -131,7 +123,7 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onLoggedIn() {
-        Log.d("MainActivity", "User logged in");
+        Log.d("LoginActivity", "User logged in");
 
         String trackId = "2TpxZ7JUBn3uw46aR7qd6V";
         String temp = FileManager.readFile("lastSongId.txt");
@@ -144,21 +136,21 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onLoggedOut() {
-        Log.d("MainActivity", "User logged out");
+        Log.d("LoginActivity", "User logged out");
     }
 
     @Override
     public void onLoginFailed(Error error) {
-        Log.d("MainActivity", "Login failed");
+        Log.d("LoginActivity", "Login failed");
     }
 
     @Override
     public void onTemporaryError() {
-        Log.d("MainActivity", "Temporary error occurred");
+        Log.d("LoginActivity", "Temporary error occurred");
     }
 
     @Override
     public void onConnectionMessage(String message) {
-        Log.d("MainActivity", "Received connection message: " + message);
+        Log.d("LoginActivity", "Received connection message: " + message);
     }
 }

@@ -3,19 +3,13 @@ package com.nicholas.spotifyapp;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.nicholas.States.PlayerState;
-import com.nicholas.httpwrapper.GetPlaylist;
 import com.nicholas.managers.FileManager;
-import com.nicholas.models.PlaylistModel;
 import com.nicholas.models.SongModel;
 
 import org.json.JSONException;
@@ -24,9 +18,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import static com.nicholas.httpwrapper.GetPlaylist.PLAYLIST_JSON_KEY;
-import static com.nicholas.httpwrapper.GetPlaylists.PLAYLISTS_JSON_KEY;
 
-public class PlaylistActivity extends ListActivity {
+public class EditPlaylistActivity extends ListActivity {
 
     // This is the Adapter being used to display the list's data
     private ArrayAdapter<SongModel> mAdapter;
@@ -36,7 +29,7 @@ public class PlaylistActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_playlist);
+        setContentView(R.layout.activity_edit_playlist);
 
         Intent intent = getIntent();
         String response = intent.getStringExtra(PLAYLIST_JSON_KEY);

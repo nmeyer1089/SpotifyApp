@@ -1,18 +1,9 @@
 package com.nicholas.httpwrapper;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
-import com.nicholas.models.PlaylistModel;
-import com.nicholas.spotifyapp.PlaylistListActivity;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.nicholas.spotifyapp.PlaylistsActivity;
 
 /**
  * Created by Nicholas on 9/2/2017.
@@ -36,7 +27,7 @@ public class GetPlaylists extends OkHttpWrapper {
     @Override
     protected void onPostExecute(String response) {
         //start playlist list activity
-        Intent intent = new Intent(caller, PlaylistListActivity.class);
+        Intent intent = new Intent(caller, PlaylistsActivity.class);
         intent.putExtra(PLAYLISTS_JSON_KEY, response);
         caller.startActivity(intent);
         return;

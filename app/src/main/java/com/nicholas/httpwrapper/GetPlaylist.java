@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.nicholas.models.PlaylistModel;
-import com.nicholas.spotifyapp.PlaylistActivity;
-import com.nicholas.spotifyapp.PlaylistListActivity;
+import com.nicholas.spotifyapp.EditPlaylistActivity;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by Nicholas on 9/8/2017.
@@ -44,7 +42,7 @@ public class GetPlaylist extends OkHttpWrapper{
     @Override
     protected void onPostExecute(String response) {
         //start playlist activity
-        Intent intent = new Intent(caller, PlaylistActivity.class);
+        Intent intent = new Intent(caller, EditPlaylistActivity.class);
         intent.putExtra(PLAYLIST_JSON_KEY, response);
         caller.startActivity(intent);
         return;

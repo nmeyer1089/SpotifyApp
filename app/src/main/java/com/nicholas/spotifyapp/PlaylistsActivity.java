@@ -22,7 +22,7 @@ import static com.nicholas.httpwrapper.GetPlaylists.PLAYLISTS_JSON_KEY;
  * Created by Nicholas on 9/6/2017.
  */
 
-public class PlaylistListActivity extends ListActivity {
+public class PlaylistsActivity extends ListActivity {
 
     // This is the Adapter being used to display the list's data
     private ArrayAdapter<PlaylistModel> mAdapter;
@@ -34,7 +34,7 @@ public class PlaylistListActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         // Get ListView object from xml
         //listView = findViewById(R.id.list);
-        setContentView(R.layout.activity_playlist_list);
+        setContentView(R.layout.activity_playlists);
 
         Intent intent = getIntent();
         String response = intent.getStringExtra(PLAYLISTS_JSON_KEY);

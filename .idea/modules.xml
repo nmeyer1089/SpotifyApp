@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SpotCheck.iml" filepath="$PROJECT_DIR$/SpotCheck.iml" />
+      <module fileurl="file://E:\Development\Android Visual Studio\SpotCheck\SpotCheck.iml" filepath="E:\Development\Android Visual Studio\SpotCheck\SpotCheck.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://E:\Development\Android Visual Studio\SpotCheck\app\app.iml" filepath="E:\Development\Android Visual Studio\SpotCheck\app\app.iml" />
     </modules>
   </component>
 </project>
