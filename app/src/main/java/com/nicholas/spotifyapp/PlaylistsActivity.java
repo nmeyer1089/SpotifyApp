@@ -54,7 +54,6 @@ public class PlaylistsActivity extends ListActivity {
         PlaylistModel selected = playlists.get(position);
         GetPlaylist getPlaylist = new GetPlaylist(this);
         getPlaylist.getCurrentUserPlaylist(selected);
-
     }
 
     private ArrayList<PlaylistModel> parsePlaylistListString(String jsonString) {

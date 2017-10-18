@@ -26,7 +26,12 @@
         <activity
             android:name=".EditPlaylistActivity"
             android:label="@string/title_activity_playlist"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".EditSongActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

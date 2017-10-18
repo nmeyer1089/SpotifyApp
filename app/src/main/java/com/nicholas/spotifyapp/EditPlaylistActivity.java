@@ -48,6 +48,10 @@ public class EditPlaylistActivity extends ListActivity {
         String trackId = songs.get(position).id;
         PlayerState.player.playUri(null, "spotify:track:" + trackId, 0, 0);
         FileManager.writeFile("lastSongId.txt", trackId);
+
+        Intent intent = new Intent(this, EditSongActivity.class);
+        ResponseTransferHelper.getInstance().addPair("trackId", trackId);
+        startActivity(intent);
     }
 
     private ArrayList<SongModel> parsePlaylistString(String jsonString) {

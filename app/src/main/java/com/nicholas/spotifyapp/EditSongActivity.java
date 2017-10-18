@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.nicholas.States.PlayerState;
 import com.nicholas.httpwrapper.ResponseTransferHelper;
@@ -28,7 +30,39 @@ public class EditSongActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_song);
 
-        // do more stuff
+        String songId = ResponseTransferHelper.getInstance().getValue("trackId");
+
+        TextView songName = (TextView) findViewById(R.id.song_name);
+        songName.setText(songId);
+
+        SeekBar.OnSeekBarChangeListener listener = new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                TextView seekLabel;
+                switch(seekBar.getId()) {
+                    case R.id.start_seek:
+                        seekLabel = (TextView) findViewById(R.id.start_seek_label);
+                        seekLabel.setText(String.valueOf(progress));
+                        break;
+                    case R.id.end_seek:
+                        seekLabel = (TextView) findViewById(R.id.end_seek_label);
+                        seekLabel.setText(String.valueOf(progress));
+                        break;
+                }
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // play song snippet here
+            }
+        };
+
+        SeekBar startBar = (SeekBar) findViewById(R.id.start_seek);
+        startBar.setOnSeekBarChangeListener(listener);
+        SeekBar endBar = (SeekBar) findViewById(R.id.end_seek);
+        endBar.setOnSeekBarChangeListener(listener);
     }
 
 }
