@@ -11,6 +11,9 @@ public class SongModel {
     public String artist;
     public String album;
 
+    public double startTime;
+    public double endTime;
+
     @Override
     public String toString() {
         String nameString = "No Name";
