@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.nicholas.httpwrapper.GetPlaylist;
+import com.nicholas.httpwrapper.ResponseTransferHelper;
 import com.nicholas.models.PlaylistModel;
 
 import org.json.JSONException;
@@ -31,30 +32,29 @@ public class PlaylistsActivity extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         // Get ListView object from xml
-        //listView = findViewById(R.id.list);
         setContentView(R.layout.activity_playlists);
 
         Intent intent = getIntent();
-        String response = intent.getStringExtra(PLAYLISTS_JSON_KEY);
+        String response = ResponseTransferHelper.getInstance().getValue(PLAYLISTS_JSON_KEY);
         playlists = parsePlaylistListString(response);
 
         // Create an empty adapter we will use to display the loaded data.
         // We pass null for the cursor, then update it in onLoadFinished()
         mAdapter =  new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, playlists);
-        //listView.setAdapter(mAdapter);
         setListAdapter(mAdapter);
-
-
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+
         PlaylistModel selected = playlists.get(position);
         GetPlaylist getPlaylist = new GetPlaylist(this);
         getPlaylist.getCurrentUserPlaylist(selected);
+
     }
 
     private ArrayList<PlaylistModel> parsePlaylistListString(String jsonString) {

@@ -55,8 +55,6 @@ public class LoginActivity extends Activity implements
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
-
-        Log.d("LoginActivity", "ONCREATE METHOD CALLED");
     }
 
     @Override
@@ -97,7 +95,6 @@ public class LoginActivity extends Activity implements
     protected void onDestroy() {
         // VERY IMPORTANT! This must always be called or else you will leak resources
         Spotify.destroyPlayer(this);
-        Log.d("LoginActivity", "ONDESTROY METHOD CALLED");
         super.onDestroy();
     }
 

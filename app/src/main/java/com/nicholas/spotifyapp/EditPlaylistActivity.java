@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.nicholas.States.PlayerState;
+import com.nicholas.httpwrapper.ResponseTransferHelper;
 import com.nicholas.managers.FileManager;
 import com.nicholas.models.SongModel;
 
@@ -32,7 +33,7 @@ public class EditPlaylistActivity extends ListActivity {
         setContentView(R.layout.activity_edit_playlist);
 
         Intent intent = getIntent();
-        String response = intent.getStringExtra(PLAYLIST_JSON_KEY);
+        String response = ResponseTransferHelper.getInstance().getValue(PLAYLIST_JSON_KEY);
         songs = parsePlaylistString(response);
 
         // Create an empty adapter we will use to display the loaded data.

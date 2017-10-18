@@ -28,7 +28,7 @@ public class GetPlaylists extends OkHttpWrapper {
     protected void onPostExecute(String response) {
         //start playlist list activity
         Intent intent = new Intent(caller, PlaylistsActivity.class);
-        intent.putExtra(PLAYLISTS_JSON_KEY, response);
+        ResponseTransferHelper.getInstance().addPair(PLAYLISTS_JSON_KEY, response);
         caller.startActivity(intent);
         return;
     }
