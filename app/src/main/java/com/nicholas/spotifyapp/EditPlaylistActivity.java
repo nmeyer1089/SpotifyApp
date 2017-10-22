@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.nicholas.States.PlayerState;
+import com.nicholas.States.UserState;
 import com.nicholas.httpwrapper.ResponseTransferHelper;
 import com.nicholas.managers.FileManager;
 import com.nicholas.models.SongModel;
@@ -27,6 +28,8 @@ public class EditPlaylistActivity extends ListActivity {
     // ListView listView;
     private ArrayList<SongModel> songs = new ArrayList<>();
 
+    private String playlistId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,12 +38,23 @@ public class EditPlaylistActivity extends ListActivity {
         Intent intent = getIntent();
         String response = ResponseTransferHelper.getInstance().getValue(PLAYLIST_JSON_KEY);
         songs = parsePlaylistString(response);
+        playlistId = ResponseTransferHelper.getInstance().getValue("playlistId");
 
         // Create an empty adapter we will use to display the loaded data.
         // We pass null for the cursor, then update it in onLoadFinished()
         mAdapter =  new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, songs);
         setListAdapter(mAdapter);
+
+        // ensure entry for playlist exists
+        UserState.editPlaylist(playlistId);
+
+        // sync with userData playlist
+        ArrayList<String> songIds = new ArrayList<>();
+        for(SongModel song : songs) {
+            songIds.add(song.id);
+        }
+        UserState.syncPlaylist(playlistId, songIds);
     }
 
     @Override
@@ -51,6 +65,7 @@ public class EditPlaylistActivity extends ListActivity {
 
         Intent intent = new Intent(this, EditSongActivity.class);
         ResponseTransferHelper.getInstance().addPair("trackId", trackId);
+        ResponseTransferHelper.getInstance().addPair("playlistId", playlistId);
         startActivity(intent);
     }
 

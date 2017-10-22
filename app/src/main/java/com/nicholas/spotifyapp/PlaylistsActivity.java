@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.nicholas.States.UserState;
 import com.nicholas.httpwrapper.GetPlaylist;
 import com.nicholas.httpwrapper.ResponseTransferHelper;
 import com.nicholas.models.PlaylistModel;
@@ -37,6 +38,9 @@ public class PlaylistsActivity extends ListActivity {
         // Get ListView object from xml
         setContentView(R.layout.activity_playlists);
 
+        // load saved info into UserState
+        UserState.loadUser(ResponseTransferHelper.getInstance().getValue("userId"));
+
         Intent intent = getIntent();
         String response = ResponseTransferHelper.getInstance().getValue(PLAYLISTS_JSON_KEY);
         playlists = parsePlaylistListString(response);
@@ -46,6 +50,13 @@ public class PlaylistsActivity extends ListActivity {
         mAdapter =  new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, playlists);
         setListAdapter(mAdapter);
+
+        // sync with userData
+        ArrayList<String> playlistIds = new ArrayList<>();
+        for(PlaylistModel playlist : playlists) {
+            playlistIds.add(playlist.id);
+        }
+        UserState.syncUser(playlistIds);
     }
 
     @Override

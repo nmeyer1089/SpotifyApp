@@ -40,13 +40,18 @@ public class FileManager {
 
     public static String readFile(String filename) {
         String read = "";
+        String line = "";
         File file = new File(context.getFilesDir(), filename);
         if (!file.canRead()) {
             return "";
         }
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
-            read = reader.readLine();
+            line = reader.readLine();
+            while(line != null) {
+                read += line;
+                line = reader.readLine();
+            }
         } catch (IOException e) {
             Log.d("File Manager", "Read IO Exception" + e.getLocalizedMessage());
         }

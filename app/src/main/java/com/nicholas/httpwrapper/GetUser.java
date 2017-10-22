@@ -31,6 +31,12 @@ public class GetUser extends OkHttpWrapper {
             Log.d("GetUser", "Error parsing user Json");
         }
 
+        // save user id in ResponseTransferHelper
+        try {
+            ResponseTransferHelper.getInstance().addPair("userId", OkHttpWrapper.userJson.getString("id"));
+        } catch (Exception e) {
+
+        }
         //get playlists
         GetPlaylists getPlaylists = new GetPlaylists(caller, authToken);
         getPlaylists.getCurrentUserPlaylists();

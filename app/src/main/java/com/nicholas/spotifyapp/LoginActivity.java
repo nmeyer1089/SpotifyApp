@@ -128,7 +128,7 @@ public class LoginActivity extends Activity implements
             trackId = temp;
         }
 
-        mPlayer.playUri(null, "spotify:track:" + trackId, 0, 0);
+        //mPlayer.playUri(null, "spotify:track:" + trackId, 0, 0);
     }
 
     @Override
