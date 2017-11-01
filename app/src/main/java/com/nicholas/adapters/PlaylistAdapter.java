@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.nicholas.States.PlayerState;
 import com.nicholas.httpwrapper.ResponseTransferHelper;
-import com.nicholas.managers.FileManager;
 import com.nicholas.models.SongModel;
 import com.nicholas.spotifyapp.EditSongActivity;
 import com.nicholas.spotifyapp.R;
@@ -23,12 +22,15 @@ import java.util.ArrayList;
  */
 
 public class PlaylistAdapter extends ArrayAdapter<SongModel> {
+    private ArrayList<SongModel> songList;
+
     public PlaylistAdapter(Context context, ArrayList<SongModel> songs) {
         super(context, 0, songs);
+        songList = songs;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
         final SongModel song = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
@@ -43,7 +45,9 @@ public class PlaylistAdapter extends ArrayAdapter<SongModel> {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayerState.player.playUri(null, "spotify:track:" + song.id, 0, song.startTime);
+                PlayerState.setQueue(songList);
+                PlayerState.setPosition(position);
+                PlayerState.playSong(song);
             }
         });
 
@@ -53,7 +57,7 @@ public class PlaylistAdapter extends ArrayAdapter<SongModel> {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), EditSongActivity.class);
                 ResponseTransferHelper.getInstance().addPair("trackId", song.id);
-                ResponseTransferHelper.getInstance().setCurrentSong(song);
+                ResponseTransferHelper.getInstance().setEditingSong(song);
                 getContext().startActivity(intent);
             }
         });

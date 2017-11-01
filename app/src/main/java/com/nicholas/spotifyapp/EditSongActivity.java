@@ -28,6 +28,16 @@ import static com.nicholas.httpwrapper.GetPlaylist.PLAYLIST_JSON_KEY;
 
 public class EditSongActivity extends Activity {
 
+    private static int window = 300;
+
+    private String miliToTimestamp(int mili) {
+        String secs = Integer.toString(mili/1000 % 60);
+        String mins = Integer.toString(mili / 60000);
+        if (secs.length() == 1) {
+            return mins + ":0" + secs;
+        }
+        return mins + ":" + secs;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,33 +46,33 @@ public class EditSongActivity extends Activity {
 
         final String songId = ResponseTransferHelper.getInstance().getValue("trackId");
         final String playlistId = ResponseTransferHelper.getInstance().getValue("playlistId");
-        final SongModel currentSong = ResponseTransferHelper.getInstance().getCurrentSong();
+        final SongModel editingSong = ResponseTransferHelper.getInstance().getEditingSong();
 
         TextView songName = (TextView) findViewById(R.id.song_name);
         songName.setText(songId);
 
         final SeekBar startBar = (SeekBar) findViewById(R.id.start_seek);
-        startBar.setMax(currentSong.durationMs);
+        startBar.setMax(editingSong.durationMs);
         final SeekBar endBar = (SeekBar) findViewById(R.id.end_seek);
-        endBar.setMax(currentSong.durationMs);
+        endBar.setMax(editingSong.durationMs);
 
         final TextView startLabel = (TextView) findViewById(R.id.start_seek_label);
         final TextView endLabel = (TextView) findViewById(R.id.end_seek_label);
-        //Pair<Integer, Integer> times = UserState.getSongTimes(playlistId, currentSong);
-        startBar.setProgress(currentSong.startTime);
-        endBar.setProgress(currentSong.endTime);
-        startLabel.setText(String.valueOf(currentSong.startTime));
-        endLabel.setText(String.valueOf(currentSong.endTime));
+        //Pair<Integer, Integer> times = UserState.getSongTimes(playlistId, editingSong);
+        startBar.setProgress(editingSong.startTime);
+        endBar.setProgress(editingSong.endTime);
+        startLabel.setText(miliToTimestamp(editingSong.startTime));
+        endLabel.setText(miliToTimestamp(editingSong.endTime));
 
         SeekBar.OnSeekBarChangeListener listener = new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 switch(seekBar.getId()) {
                     case R.id.start_seek:
-                        startLabel.setText(String.valueOf(progress));
+                        startLabel.setText(miliToTimestamp(progress));
                         break;
                     case R.id.end_seek:
-                        endLabel.setText(String.valueOf(progress));
+                        endLabel.setText(miliToTimestamp(progress));
                         break;
                 }
             }
@@ -71,20 +81,21 @@ public class EditSongActivity extends Activity {
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // play song snippet here
-
-                // update song info
                 switch(seekBar.getId()) {
                     case R.id.start_seek:
                         if (startBar.getProgress() > endBar.getProgress()) { startBar.setProgress(endBar.getProgress()); }
-                        currentSong.startTime = startBar.getProgress();
+                        editingSong.startTime = startBar.getProgress();
+                        PlayerState.playSong(editingSong);
                         break;
                     case R.id.end_seek:
                         if (endBar.getProgress() < startBar.getProgress()) { endBar.setProgress(startBar.getProgress()); }
-                        currentSong.endTime = endBar.getProgress();
+                        editingSong.endTime = endBar.getProgress();
+                        if (editingSong.endTime - window > -1) {
+                            PlayerState.playSong(editingSong, editingSong.endTime - window);
+                        }
                         break;
                 }
-                UserState.editSong(playlistId, currentSong, String.valueOf(startBar.getProgress()), String.valueOf(endBar.getProgress()));
+                UserState.editSong(playlistId, editingSong, String.valueOf(startBar.getProgress()), String.valueOf(endBar.getProgress()));
             }
         };
 

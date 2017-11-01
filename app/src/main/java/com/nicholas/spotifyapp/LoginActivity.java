@@ -39,7 +39,7 @@ public class LoginActivity extends Activity implements
     // Can be any integer
     private static final int REQUEST_CODE = 1337;
 
-    private Player mPlayer;
+    private SpotifyPlayer mPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +79,7 @@ public class LoginActivity extends Activity implements
                         mPlayer.addConnectionStateCallback(LoginActivity.this);
                         mPlayer.addNotificationCallback(LoginActivity.this);
 
-                        PlayerState.player = mPlayer;
+                        PlayerState.setPlayer(mPlayer);
                     }
 
                     @Override

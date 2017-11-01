@@ -12,7 +12,7 @@ import java.util.Map;
 public class ResponseTransferHelper {
     private static final ResponseTransferHelper ourInstance = new ResponseTransferHelper();
     private static Map<String, String> myMap = new HashMap<>();
-    private static SongModel currentSong;
+    private static SongModel editingSong;
 
     public static ResponseTransferHelper getInstance() {
         return ourInstance;
@@ -31,10 +31,10 @@ public class ResponseTransferHelper {
         return temp;
     }
 
-    public void setCurrentSong(SongModel song) {
-        currentSong = song;
+    public void setEditingSong(SongModel song) {
+        editingSong = song;
     }
-    public SongModel getCurrentSong() {
-        return currentSong;
+    public SongModel getEditingSong() {
+        return editingSong;
     }
 }
