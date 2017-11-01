@@ -1,5 +1,7 @@
 package com.nicholas.httpwrapper;
 
+import com.nicholas.models.SongModel;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +12,7 @@ import java.util.Map;
 public class ResponseTransferHelper {
     private static final ResponseTransferHelper ourInstance = new ResponseTransferHelper();
     private static Map<String, String> myMap = new HashMap<>();
+    private static SongModel currentSong;
 
     public static ResponseTransferHelper getInstance() {
         return ourInstance;
@@ -26,5 +29,12 @@ public class ResponseTransferHelper {
         String temp = myMap.get(key);
         myMap.remove(key);
         return temp;
+    }
+
+    public void setCurrentSong(SongModel song) {
+        currentSong = song;
+    }
+    public SongModel getCurrentSong() {
+        return currentSong;
     }
 }

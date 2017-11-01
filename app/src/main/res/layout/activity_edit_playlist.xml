@@ -12,19 +12,22 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="10dp"
-        android:text="@string/app_name"/>
+        android:text="@string/app_name" />
 
     <TextView
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:padding="10dp"
-        android:text="@string/edit_playlist_label"/>
+        android:text="@string/edit_playlist_label" />
+
 
     <ListView
         android:id="@android:id/list"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:descendantFocusability="beforeDescendants">
     </ListView>
+
 
 </LinearLayout>

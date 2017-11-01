@@ -11,8 +11,8 @@ public class SongModel {
     public String artist;
     public String album;
 
-    public double startTime;
-    public double endTime;
+    public int startTime;
+    public int endTime;
 
     @Override
     public String toString() {

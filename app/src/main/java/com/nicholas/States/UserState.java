@@ -4,12 +4,15 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.nicholas.managers.FileManager;
+import com.nicholas.models.SongModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 
 /**
@@ -67,15 +70,22 @@ public class UserState {
         }
     }
 
-    public static void syncPlaylist(String playlistId, ArrayList<String> songIds) {
+    public static void syncPlaylist(String playlistId, ArrayList<SongModel> songs) {
+        Map<String, SongModel> idsToSongs = new HashMap<>();
+        for(SongModel song : songs) {
+            idsToSongs.put(song.id, song);
+        }
 
         // remove from JSON if old
         try {
             ArrayList<String> songsToRemove = new ArrayList<>();
             for (Iterator<String> it = userData.getJSONObject(playlistId).keys(); it.hasNext(); ) {
                 String songId = it.next();
-                if(!songIds.contains(songId)) {
+                if(!idsToSongs.keySet().contains(songId)) {
                     songsToRemove.add(songId);
+                } else {
+                    idsToSongs.get(songId).startTime = Integer.parseInt(userData.getJSONObject(playlistId).getJSONObject(songId).getString("start"));
+                    idsToSongs.get(songId).endTime = Integer.parseInt(userData.getJSONObject(playlistId).getJSONObject(songId).getString("end"));
                 }
             }
             for (String songId : songsToRemove) {
@@ -100,20 +110,20 @@ public class UserState {
         }
     }
 
-    public static void editSong(String playlistId, String songId, String start, String end) {
+    public static void editSong(String playlistId, SongModel song, String start, String end) {
 
         try {
             // change values in JSON for start and stop if song entry exists
-            if(userData.getJSONObject(playlistId).has(songId)) {
-                JSONObject song = userData.getJSONObject(playlistId).getJSONObject(songId);
-                song.put("start", start);
-                song.put("end", end);
+            if(userData.getJSONObject(playlistId).has(song.id)) {
+                JSONObject jSong = userData.getJSONObject(playlistId).getJSONObject(song.id);
+                jSong.put("start", start);
+                jSong.put("end", end);
             } else {
                 // create new JSON object for this song
-                JSONObject song = new JSONObject();
-                song.put("start", start);
-                song.put("end", end);
-                userData.getJSONObject(playlistId).put(songId, song);
+                JSONObject jSong = new JSONObject();
+                jSong.put("start", start);
+                jSong.put("end", end);
+                userData.getJSONObject(playlistId).put(song.id, song);
             }
 
         } catch(Exception e) {
@@ -123,13 +133,13 @@ public class UserState {
         saveUserData();
     }
 
-    public static Pair<Integer, Integer> getSongTimes(String playlistId, String songId) {
+    public static Pair<Integer, Integer> getSongTimes(String playlistId, SongModel song) {
         int start = 0;
-        int end = 0;
+        int end = song.durationMs;
         try {
-            if(userData.getJSONObject(playlistId).has(songId)) {
-                start = Integer.valueOf(userData.getJSONObject(playlistId).getJSONObject(songId).get("start").toString());
-                end = Integer.valueOf(userData.getJSONObject(playlistId).getJSONObject(songId).get("end").toString());
+            if(userData.getJSONObject(playlistId).has(song.id)) {
+                start = Integer.valueOf(userData.getJSONObject(playlistId).getJSONObject(song.id).get("start").toString());
+                end = Integer.valueOf(userData.getJSONObject(playlistId).getJSONObject(song.id).get("end").toString());
             }
         } catch(Exception e) {
 

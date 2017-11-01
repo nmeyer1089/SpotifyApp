@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import com.nicholas.States.PlayerState;
 import com.nicholas.States.UserState;
+import com.nicholas.adapters.PlaylistAdapter;
 import com.nicholas.httpwrapper.ResponseTransferHelper;
 import com.nicholas.managers.FileManager;
 import com.nicholas.models.SongModel;
@@ -42,31 +43,18 @@ public class EditPlaylistActivity extends ListActivity {
 
         // Create an empty adapter we will use to display the loaded data.
         // We pass null for the cursor, then update it in onLoadFinished()
-        mAdapter =  new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, songs);
+        mAdapter =  new PlaylistAdapter(this, songs);
         setListAdapter(mAdapter);
 
         // ensure entry for playlist exists
         UserState.editPlaylist(playlistId);
 
         // sync with userData playlist
-        ArrayList<String> songIds = new ArrayList<>();
-        for(SongModel song : songs) {
-            songIds.add(song.id);
-        }
-        UserState.syncPlaylist(playlistId, songIds);
-    }
+        UserState.syncPlaylist(playlistId, songs);
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        String trackId = songs.get(position).id;
-        PlayerState.player.playUri(null, "spotify:track:" + trackId, 0, 0);
-        FileManager.writeFile("lastSongId.txt", trackId);
 
-        Intent intent = new Intent(this, EditSongActivity.class);
-        ResponseTransferHelper.getInstance().addPair("trackId", trackId);
+        //this used to be handled on click
         ResponseTransferHelper.getInstance().addPair("playlistId", playlistId);
-        startActivity(intent);
     }
 
     private ArrayList<SongModel> parsePlaylistString(String jsonString) {
@@ -85,6 +73,8 @@ public class EditPlaylistActivity extends ListActivity {
                 song.album = trackJson.getJSONObject("album").getString("name");
                 song.artist = trackJson.getJSONArray("artists").getJSONObject(0).getString("name");
                 song.durationMs = trackJson.getInt("duration_ms");
+                song.endTime = song.durationMs;
+                song.startTime = 0;
                 songList.add(song);
             }
         } catch ( JSONException e) {
