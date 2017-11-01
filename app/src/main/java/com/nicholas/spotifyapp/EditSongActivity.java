@@ -47,6 +47,7 @@ public class EditSongActivity extends Activity {
         final String songId = ResponseTransferHelper.getInstance().getValue("trackId");
         final String playlistId = ResponseTransferHelper.getInstance().getValue("playlistId");
         final SongModel editingSong = ResponseTransferHelper.getInstance().getEditingSong();
+        final int editingPos = ResponseTransferHelper.getInstance().getEditingPosition();
 
         TextView songName = (TextView) findViewById(R.id.song_name);
         songName.setText(songId);
@@ -85,13 +86,13 @@ public class EditSongActivity extends Activity {
                     case R.id.start_seek:
                         if (startBar.getProgress() > endBar.getProgress()) { startBar.setProgress(endBar.getProgress()); }
                         editingSong.startTime = startBar.getProgress();
-                        PlayerState.playSong(editingSong);
+                        PlayerState.playSong(editingSong, editingPos);
                         break;
                     case R.id.end_seek:
                         if (endBar.getProgress() < startBar.getProgress()) { endBar.setProgress(startBar.getProgress()); }
                         editingSong.endTime = endBar.getProgress();
                         if (editingSong.endTime - window > -1) {
-                            PlayerState.playSong(editingSong, editingSong.endTime - window);
+                            PlayerState.playSong(editingSong, editingSong.endTime - window, editingPos);
                         }
                         break;
                 }

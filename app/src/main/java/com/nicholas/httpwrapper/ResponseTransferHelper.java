@@ -13,6 +13,7 @@ public class ResponseTransferHelper {
     private static final ResponseTransferHelper ourInstance = new ResponseTransferHelper();
     private static Map<String, String> myMap = new HashMap<>();
     private static SongModel editingSong;
+    private static int editingPosition;
 
     public static ResponseTransferHelper getInstance() {
         return ourInstance;
@@ -31,10 +32,12 @@ public class ResponseTransferHelper {
         return temp;
     }
 
-    public void setEditingSong(SongModel song) {
+    public void setEditingSong(SongModel song, int pos) {
         editingSong = song;
+        editingPosition = pos;
     }
     public SongModel getEditingSong() {
         return editingSong;
     }
+    public int getEditingPosition() { return editingPosition; }
 }

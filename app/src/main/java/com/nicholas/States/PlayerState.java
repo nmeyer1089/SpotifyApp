@@ -21,21 +21,19 @@ public class PlayerState {
     public static  void setQueue(List<SongModel> q) {
         queue = q;
     }
-    public static void setPosition(int i) {
-        songIndex = i;
-    }
     public static void setPlayer(SpotifyPlayer p) {
         player = p;
     }
 
-    public static void playSong(SongModel s) {
-        playSong(s, s.startTime);
+    public static void playSong(SongModel s, int pos) {
+        playSong(s, s.startTime, pos);
     }
-    public static void playSong(SongModel s, int start) {
-        playSong(s, start, s.endTime);
+    public static void playSong(SongModel s, int start, int pos) {
+        playSong(s, start, s.endTime, pos);
     }
-    public static void playSong(SongModel s, int start, int end) {
+    public static void playSong(SongModel s, int start, int end, int pos) {
         playingSong = s;
+        songIndex = pos;
         player.playUri(null, "spotify:track:" + s.id, 0, start);
 
         //set timer for end - start milis

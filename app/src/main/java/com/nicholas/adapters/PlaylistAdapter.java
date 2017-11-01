@@ -46,8 +46,7 @@ public class PlaylistAdapter extends ArrayAdapter<SongModel> {
             @Override
             public void onClick(View v) {
                 PlayerState.setQueue(songList);
-                PlayerState.setPosition(position);
-                PlayerState.playSong(song);
+                PlayerState.playSong(song, position);
             }
         });
 
@@ -57,7 +56,7 @@ public class PlaylistAdapter extends ArrayAdapter<SongModel> {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), EditSongActivity.class);
                 ResponseTransferHelper.getInstance().addPair("trackId", song.id);
-                ResponseTransferHelper.getInstance().setEditingSong(song);
+                ResponseTransferHelper.getInstance().setEditingSong(song, position);
                 getContext().startActivity(intent);
             }
         });
