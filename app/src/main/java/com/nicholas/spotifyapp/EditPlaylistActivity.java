@@ -4,15 +4,12 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.nicholas.States.PlayerState;
 import com.nicholas.States.UserState;
 import com.nicholas.adapters.PlaylistAdapter;
 import com.nicholas.httpwrapper.ResponseTransferHelper;
-import com.nicholas.managers.FileManager;
 import com.nicholas.models.SongModel;
 
 import org.json.JSONException;
@@ -51,6 +48,8 @@ public class EditPlaylistActivity extends ListActivity {
 
         // sync with userData playlist
         UserState.syncPlaylist(playlistId, songs);
+
+        PlayerState.setSongs(songs);
 
 
         //this used to be handled on click

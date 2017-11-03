@@ -22,11 +22,9 @@ import java.util.ArrayList;
  */
 
 public class PlaylistAdapter extends ArrayAdapter<SongModel> {
-    private ArrayList<SongModel> songList;
 
     public PlaylistAdapter(Context context, ArrayList<SongModel> songs) {
         super(context, 0, songs);
-        songList = songs;
     }
 
     @Override
@@ -45,8 +43,7 @@ public class PlaylistAdapter extends ArrayAdapter<SongModel> {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayerState.setQueue(songList);
-                PlayerState.playSong(song, position);
+                PlayerState.playSong(position);
             }
         });
 

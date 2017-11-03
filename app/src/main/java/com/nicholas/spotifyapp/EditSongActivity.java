@@ -28,7 +28,7 @@ import static com.nicholas.httpwrapper.GetPlaylist.PLAYLIST_JSON_KEY;
 
 public class EditSongActivity extends Activity {
 
-    private static int window = 300;
+    private static int window = 3000;
 
     private String miliToTimestamp(int mili) {
         String secs = Integer.toString(mili/1000 % 60);
@@ -86,13 +86,13 @@ public class EditSongActivity extends Activity {
                     case R.id.start_seek:
                         if (startBar.getProgress() > endBar.getProgress()) { startBar.setProgress(endBar.getProgress()); }
                         editingSong.startTime = startBar.getProgress();
-                        PlayerState.playSong(editingSong, editingPos);
+                        PlayerState.playSong(editingPos);
                         break;
                     case R.id.end_seek:
                         if (endBar.getProgress() < startBar.getProgress()) { endBar.setProgress(startBar.getProgress()); }
                         editingSong.endTime = endBar.getProgress();
                         if (editingSong.endTime - window > -1) {
-                            PlayerState.playSong(editingSong, editingSong.endTime - window, editingPos);
+                            PlayerState.playSong(editingSong.endTime - window, editingPos);
                         }
                         break;
                 }
