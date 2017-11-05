@@ -5,12 +5,14 @@
 
     <Button
         android:id="@+id/play_song"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="|>" />
+        android:text="@string/play_song_label"/>
 
     <TextView
         android:id="@+id/song_name"
+        android:gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:text="@+id/label">

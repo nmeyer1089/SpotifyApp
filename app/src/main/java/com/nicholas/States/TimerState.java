@@ -26,15 +26,22 @@ public class TimerState {
         timer.cancel();
         timer = new CountDownTimer(millis, 1000) {
 
-            public void onTick(long millisUntilFinished) {            }
+            public void onTick(long millisUntilFinished) {
+                PlayerState.elapsedTimeSec+=1;
+            }
             public void onFinish() {
                 try {
+                    PlayerState.elapsedTimeSec = 0;
                     endFun.call();
                 } catch (Exception e) {
-                    Log.e(TAG, "onFinish: Expection in fn call");
+                    Log.e(TAG, "onFinish: Excpection in fn call");
                 }
             }
         }.start();
+    }
+
+    public static void stopTimer() {
+        timer.cancel();
     }
 
 }
