@@ -48,6 +48,7 @@ public class UserState {
 
     public static void saveUserData() {
 
+        Log.e("UserState", "saveUserData: Saved new JSON to file system");
         FileManager.writeFile(userId+".txt", userData.toString());
     }
 
@@ -84,8 +85,10 @@ public class UserState {
                 if(!idsToSongs.keySet().contains(songId)) {
                     songsToRemove.add(songId);
                 } else {
-                    idsToSongs.get(songId).startTime = Integer.parseInt(userData.getJSONObject(playlistId).getJSONObject(songId).getString("start"));
-                    idsToSongs.get(songId).endTime = Integer.parseInt(userData.getJSONObject(playlistId).getJSONObject(songId).getString("end"));
+                    if (userData.getJSONObject(playlistId).has(songId)) {
+                        idsToSongs.get(songId).startTime = Integer.parseInt(userData.getJSONObject(playlistId).getJSONObject(songId).getString("start"));
+                        idsToSongs.get(songId).endTime = Integer.parseInt(userData.getJSONObject(playlistId).getJSONObject(songId).getString("end"));
+                    }
                 }
             }
             for (String songId : songsToRemove) {
@@ -123,7 +126,7 @@ public class UserState {
                 JSONObject jSong = new JSONObject();
                 jSong.put("start", start);
                 jSong.put("end", end);
-                userData.getJSONObject(playlistId).put(song.id, song);
+                userData.getJSONObject(playlistId).put(song.id, jSong);
             }
 
         } catch(Exception e) {

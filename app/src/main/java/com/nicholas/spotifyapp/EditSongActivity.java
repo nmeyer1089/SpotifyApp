@@ -44,13 +44,12 @@ public class EditSongActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_song);
 
-        final String songId = ResponseTransferHelper.getInstance().getValue("trackId");
         final String playlistId = ResponseTransferHelper.getInstance().getValue("playlistId");
         final SongModel editingSong = ResponseTransferHelper.getInstance().getEditingSong();
         final int editingPos = ResponseTransferHelper.getInstance().getEditingPosition();
 
         TextView songName = (TextView) findViewById(R.id.song_name);
-        songName.setText(songId);
+        songName.setText(ResponseTransferHelper.getInstance().getEditingSong().name);
 
         final SeekBar startBar = (SeekBar) findViewById(R.id.start_seek);
         startBar.setMax(editingSong.durationMs);

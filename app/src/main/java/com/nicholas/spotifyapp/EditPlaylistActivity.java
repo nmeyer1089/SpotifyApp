@@ -51,7 +51,6 @@ public class EditPlaylistActivity extends ListActivity {
 
         PlayerState.setSongs(songs);
 
-
         //this used to be handled on click
         ResponseTransferHelper.getInstance().addPair("playlistId", playlistId);
     }

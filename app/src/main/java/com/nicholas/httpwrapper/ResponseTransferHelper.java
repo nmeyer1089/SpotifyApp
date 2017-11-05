@@ -27,9 +27,7 @@ public class ResponseTransferHelper {
     }
 
     public String getValue(String key) {
-        String temp = myMap.get(key);
-        myMap.remove(key);
-        return temp;
+        return myMap.get(key);
     }
 
     public void setEditingSong(SongModel song, int pos) {
