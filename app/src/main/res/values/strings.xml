@@ -2,8 +2,6 @@
     <string name="app_name">SpotCheck</string>
     <string name="playlists_label">Playlists</string>
     <string name="play_song_label">Play</string>
-    <string name="edit_playlist_label">Edit Playlist</string>
-    <string name="edit_song_label">Edit Song</string>
     <string name="title_activity_playlist">PlaylistActivity</string>
     <string name="end_bar_label">End Time</string>
     <string name="start_bar_label">Start Time</string>

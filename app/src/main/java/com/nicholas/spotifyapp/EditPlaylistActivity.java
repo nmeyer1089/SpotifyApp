@@ -9,6 +9,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.nicholas.States.PlayerState;
 import com.nicholas.States.UserState;
@@ -48,6 +49,11 @@ public class EditPlaylistActivity extends ListActivity implements SensorEventLis
         String response = ResponseTransferHelper.getInstance().getValue(PLAYLIST_JSON_KEY);
         songs = parsePlaylistString(response);
         playlistId = ResponseTransferHelper.getInstance().getValue("playlistId");
+
+        // set playlist name
+        String playlistName = ResponseTransferHelper.getInstance().getValue("playlistName");
+        TextView name = (TextView) findViewById(R.id.playlist_name_label);
+        name.setText(playlistName);
 
         // Create an empty adapter we will use to display the loaded data.
         // We pass null for the cursor, then update it in onLoadFinished()

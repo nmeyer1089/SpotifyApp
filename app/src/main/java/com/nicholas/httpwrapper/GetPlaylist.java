@@ -36,6 +36,7 @@ public class GetPlaylist extends OkHttpWrapper{
         }
 
         ResponseTransferHelper.getInstance().addPair("playlistId", playlist.id);
+        ResponseTransferHelper.getInstance().addPair("playlistName", playlist.name);
 
         this.authAsyncGet(USERS_FRAG + playlist.ownerId
                 + PLAYLISTS_FRAG + playlist.id + TRACKS_FRAG);
