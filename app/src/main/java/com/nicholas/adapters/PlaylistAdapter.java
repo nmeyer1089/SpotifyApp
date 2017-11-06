@@ -18,6 +18,8 @@ import com.nicholas.spotifyapp.EditSongActivity;
 import com.nicholas.spotifyapp.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Nicholas on 10/30/2017.
@@ -25,8 +27,11 @@ import java.util.ArrayList;
 
 public class PlaylistAdapter extends ArrayAdapter<SongModel> {
 
+    private static Map<String, View> cvMap = new HashMap<>();
+
     public PlaylistAdapter(Context context, ArrayList<SongModel> songs) {
         super(context, 0, songs);
+        cvMap.clear();
     }
 
     @Override
@@ -37,6 +42,7 @@ public class PlaylistAdapter extends ArrayAdapter<SongModel> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.playlist_row_layout, parent, false);
         }
+        final View cv = convertView;
         // Lookup view for data population
         Button playButton = (Button) convertView.findViewById(R.id.play_song);
         TextView nameText = (TextView) convertView.findViewById(R.id.song_name);
@@ -45,9 +51,12 @@ public class PlaylistAdapter extends ArrayAdapter<SongModel> {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cv.setBackgroundColor(Color.LTGRAY);
                 PlayerState.playSong(position);
             }
         });
+
+        cvMap.put(song.id, cv);
 
         nameText.setText(song.name + ", " + song.artist);
         nameText.setOnClickListener(new View.OnClickListener() {
@@ -62,5 +71,17 @@ public class PlaylistAdapter extends ArrayAdapter<SongModel> {
 
         // Return the completed view to render on screen
         return convertView;
+    }
+
+    public static void updateSelection(String lastId, String songId) {
+
+        if(!lastId.equals("")) {
+            cvMap.get(lastId).setBackgroundColor(Color.WHITE);
+
+        }
+
+        cvMap.get(songId).setBackgroundColor(Color.LTGRAY);
+
+
     }
 }

@@ -2,7 +2,6 @@ package com.nicholas.spotifyapp;
 
 import android.app.ListActivity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -10,7 +9,6 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.nicholas.States.PlayerState;
 import com.nicholas.States.UserState;
@@ -115,6 +113,7 @@ public class EditPlaylistActivity extends ListActivity implements SensorEventLis
         if(accelerometer != null) {
             sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
+
         super.onResume();
     }
 

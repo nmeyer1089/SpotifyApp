@@ -84,7 +84,7 @@ public class LoginActivity extends Activity implements
 
                     @Override
                     public void onError(Throwable throwable) {
-                        Log.e("LoginActivity", "Could not initialize player: " + throwable.getMessage());
+                        Log.e("LoginActivity", "Could not setSongs player: " + throwable.getMessage());
                     }
                 });
             }

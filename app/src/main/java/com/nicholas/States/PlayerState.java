@@ -1,6 +1,7 @@
 package com.nicholas.States;
 
 import com.nicholas.Actions.PlayNextAction;
+import com.nicholas.adapters.PlaylistAdapter;
 import com.nicholas.models.SongModel;
 import com.spotify.sdk.android.player.SpotifyPlayer;
 
@@ -12,9 +13,9 @@ import java.util.List;
 
 public class PlayerState {
     private static SpotifyPlayer player;
-    private static SongModel playingSong;
+    public static SongModel playingSong;
     private static List<SongModel> songs;
-    private static int songIndex;
+    public static int songIndex;
 
     public static int elapsedTimeSec = 0;
     public static boolean isPlaying = false;
@@ -41,11 +42,17 @@ public class PlayerState {
     }
 
     public static void playSong(int start, int end, int pos) {
+        String lastId = "";
+        if(playingSong != null) {
+            lastId = playingSong.id;
+        }
         playingSong = songs.get(pos);
         songIndex = pos;
         player.playUri(null, "spotify:track:" + playingSong.id, 0, start);
 
         TimerState.startTimer(end - start, new PlayNextAction());
+
+        PlaylistAdapter.updateSelection(lastId, playingSong.id);
     }
 
     public static void togglePlaying() {
@@ -60,4 +67,5 @@ public class PlayerState {
         }
 
     }
+
 }
