@@ -123,6 +123,22 @@ public class EditSongActivity extends Activity implements SensorEventListener{
     }
 
     @Override
+    protected void onPause() {
+        sensorManager.unregisterListener(this);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        sensorManager.unregisterListener(this);
+        final Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        if(accelerometer != null) {
+            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+        super.onResume();
+    }
+
+    @Override
     public void onSensorChanged(SensorEvent event) {
         if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             try {
