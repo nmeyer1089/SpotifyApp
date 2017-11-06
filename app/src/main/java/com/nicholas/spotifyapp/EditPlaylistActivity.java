@@ -2,9 +2,11 @@ package com.nicholas.spotifyapp;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.nicholas.States.PlayerState;
 import com.nicholas.States.UserState;
@@ -51,8 +53,9 @@ public class EditPlaylistActivity extends ListActivity {
 
         PlayerState.setSongs(songs);
 
-        //this used to be handled on click
+        // this used to be handled on click
         ResponseTransferHelper.getInstance().addPair("playlistId", playlistId);
+
     }
 
     private ArrayList<SongModel> parsePlaylistString(String jsonString) {

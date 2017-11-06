@@ -131,8 +131,6 @@ public class EditSongActivity extends Activity implements SensorEventListener{
 
             }
             long currTime = System.currentTimeMillis();
-            Log.d("check", String.valueOf(currTime) + " - " + String.valueOf(lastShakeTime) + " , " + String.valueOf(MIN_TIME_BETWEEN_SHAKES_MILLISECS));
-            Log.d("check", String.valueOf(currTime-lastShakeTime));
             if ((currTime - lastShakeTime) > MIN_TIME_BETWEEN_SHAKES_MILLISECS) {
 
                 float x = event.values[0];
@@ -144,9 +142,7 @@ public class EditSongActivity extends Activity implements SensorEventListener{
                         Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
 
                 if (acceleration > SHAKE_THRESHOLD) {
-                    Log.d("EditSong", "Old LastShake: " + String.valueOf(lastShakeTime));
                     lastShakeTime = currTime;
-                    Log.d("EditSong", "New LastShake: " + String.valueOf(lastShakeTime));
                     PlayerState.togglePlaying();
                     Log.d("EditSong", "PAUSE");
                 }

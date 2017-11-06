@@ -2,6 +2,8 @@ package com.nicholas.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +41,7 @@ public class PlaylistAdapter extends ArrayAdapter<SongModel> {
         Button playButton = (Button) convertView.findViewById(R.id.play_song);
         TextView nameText = (TextView) convertView.findViewById(R.id.song_name);
         // Populate the data into the template view using the data object
-        playButton.setText("|>");
+        playButton.setText("Play");
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
