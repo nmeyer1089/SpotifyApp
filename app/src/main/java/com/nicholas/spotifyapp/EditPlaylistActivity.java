@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.OrientationEventListener;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -25,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.nicholas.httpwrapper.GetPlaylist.PLAYLIST_JSON_KEY;
 
-public class EditPlaylistActivity extends ListActivity implements SensorEventListener {
+public class EditPlaylistActivity extends ListActivity implements SensorEventListener{
 
     // This is the Adapter being used to display the list's data
     private ArrayAdapter<SongModel> mAdapter;
@@ -39,6 +40,7 @@ public class EditPlaylistActivity extends ListActivity implements SensorEventLis
     private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 3000;
     private long lastShakeTime;
     private SensorManager sensorManager;
+    private OrientationEventListener orientationEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class EditPlaylistActivity extends ListActivity implements SensorEventLis
         // sync with userData playlist
         UserState.syncPlaylist(playlistId, songs);
 
+        // set songs in player state
         PlayerState.setSongs(songs);
 
         // this used to be handled on click
@@ -76,6 +79,19 @@ public class EditPlaylistActivity extends ListActivity implements SensorEventLis
         final Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if(accelerometer != null) {
             sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+
+        // register orientation listener
+        orientationEventListener = new OrientationEventListener(getApplicationContext()) {
+            @Override
+            public void onOrientationChanged(int orientation) {
+                // save playing song id in PlaylistAdaptor
+                PlaylistAdapter.savePlayingSongId();
+            }
+        };
+
+        if(orientationEventListener.canDetectOrientation()) {
+            orientationEventListener.enable();
         }
 
     }
@@ -109,16 +125,17 @@ public class EditPlaylistActivity extends ListActivity implements SensorEventLis
     @Override
     protected void onPause() {
         sensorManager.unregisterListener(this);
+        orientationEventListener.disable();
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        sensorManager.unregisterListener(this);
         final Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if(accelerometer != null) {
             sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
+        orientationEventListener.enable();
 
         super.onResume();
     }
@@ -153,4 +170,5 @@ public class EditPlaylistActivity extends ListActivity implements SensorEventLis
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
 }

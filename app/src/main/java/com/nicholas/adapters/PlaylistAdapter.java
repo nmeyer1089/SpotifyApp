@@ -28,6 +28,7 @@ import java.util.Map;
 public class PlaylistAdapter extends ArrayAdapter<SongModel> {
 
     private static Map<String, View> cvMap = new HashMap<>();
+    private static String playingSongId = null;
 
     public PlaylistAdapter(Context context, ArrayList<SongModel> songs) {
         super(context, 0, songs);
@@ -43,6 +44,9 @@ public class PlaylistAdapter extends ArrayAdapter<SongModel> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.playlist_row_layout, parent, false);
         }
         final View cv = convertView;
+
+        cv.setBackgroundColor(Color.WHITE);
+
         // Lookup view for data population
         Button playButton = (Button) convertView.findViewById(R.id.play_song);
         TextView nameText = (TextView) convertView.findViewById(R.id.song_name);
@@ -51,7 +55,7 @@ public class PlaylistAdapter extends ArrayAdapter<SongModel> {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cv.setBackgroundColor(Color.LTGRAY);
+                cv.setBackgroundColor(Color.rgb(178,232,240));
                 PlayerState.playSong(position);
             }
         });
@@ -69,6 +73,12 @@ public class PlaylistAdapter extends ArrayAdapter<SongModel> {
             }
         });
 
+        // if this is the playing song, highlight
+        if(song.id.equals(playingSongId)) {
+            cv.setBackgroundColor(Color.rgb(178,232,240));
+            playingSongId = null;
+        }
+
         // Return the completed view to render on screen
         return convertView;
     }
@@ -77,11 +87,13 @@ public class PlaylistAdapter extends ArrayAdapter<SongModel> {
 
         if(!lastId.equals("")) {
             cvMap.get(lastId).setBackgroundColor(Color.WHITE);
-
         }
+        cvMap.get(songId).setBackgroundColor(Color.rgb(178,232,240));
+    }
 
-        cvMap.get(songId).setBackgroundColor(Color.LTGRAY);
-
-
+    public static void savePlayingSongId() {
+        if(PlayerState.isPlaying) {
+            playingSongId = PlayerState.playingSong.id;
+        }
     }
 }
