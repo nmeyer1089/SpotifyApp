@@ -34,6 +34,9 @@ import static com.nicholas.httpwrapper.GetPlaylist.PLAYLIST_JSON_KEY;
 public class EditSongActivity extends Activity implements SensorEventListener{
 
     private static int window = 3000;
+    private String playlistId = "";
+    private SeekBar startBar;
+    private SeekBar endBar;
 
     // shake variables
     private static final float SHAKE_THRESHOLD = 3.25f;
@@ -56,7 +59,7 @@ public class EditSongActivity extends Activity implements SensorEventListener{
         setContentView(R.layout.activity_edit_song);
 
         // get info
-        final String playlistId = ResponseTransferHelper.getInstance().getValue("playlistId");
+        playlistId = ResponseTransferHelper.getInstance().getValue("playlistId");
         final SongModel editingSong = ResponseTransferHelper.getInstance().getEditingSong();
         final int editingPos = ResponseTransferHelper.getInstance().getEditingPosition();
 
@@ -65,9 +68,9 @@ public class EditSongActivity extends Activity implements SensorEventListener{
         songName.setText(ResponseTransferHelper.getInstance().getEditingSong().name);
 
         // set seek bar initial values
-        final SeekBar startBar = (SeekBar) findViewById(R.id.start_seek);
+        startBar = (SeekBar) findViewById(R.id.start_seek);
         startBar.setMax(editingSong.durationMs);
-        final SeekBar endBar = (SeekBar) findViewById(R.id.end_seek);
+        endBar = (SeekBar) findViewById(R.id.end_seek);
         endBar.setMax(editingSong.durationMs);
         final TextView startLabel = (TextView) findViewById(R.id.start_seek_label);
         final TextView endLabel = (TextView) findViewById(R.id.end_seek_label);
@@ -108,7 +111,7 @@ public class EditSongActivity extends Activity implements SensorEventListener{
                         }
                         break;
                 }
-                UserState.editSong(playlistId, editingSong, String.valueOf(startBar.getProgress()), String.valueOf(endBar.getProgress()));
+                //UserState.editSong(playlistId, editingSong, String.valueOf(startBar.getProgress()), String.valueOf(endBar.getProgress()));
             }
         };
         startBar.setOnSeekBarChangeListener(listener);
@@ -124,6 +127,8 @@ public class EditSongActivity extends Activity implements SensorEventListener{
 
     @Override
     protected void onPause() {
+        // save song details
+        UserState.editSong(playlistId, ResponseTransferHelper.getInstance().getEditingSong(), String.valueOf(startBar.getProgress()), String.valueOf(endBar.getProgress()));
         sensorManager.unregisterListener(this);
         super.onPause();
     }

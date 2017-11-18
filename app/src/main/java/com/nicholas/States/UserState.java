@@ -48,7 +48,6 @@ public class UserState {
 
     public static void saveUserData() {
 
-        Log.e("UserState", "saveUserData: Saved new JSON to file system");
         FileManager.writeFile(userId+".txt", userData.toString());
     }
 
@@ -136,17 +135,4 @@ public class UserState {
         saveUserData();
     }
 
-    public static Pair<Integer, Integer> getSongTimes(String playlistId, SongModel song) {
-        int start = 0;
-        int end = song.durationMs;
-        try {
-            if(userData.getJSONObject(playlistId).has(song.id)) {
-                start = Integer.valueOf(userData.getJSONObject(playlistId).getJSONObject(song.id).get("start").toString());
-                end = Integer.valueOf(userData.getJSONObject(playlistId).getJSONObject(song.id).get("end").toString());
-            }
-        } catch(Exception e) {
-
-        }
-        return new Pair<>(start, end);
-    }
 }
