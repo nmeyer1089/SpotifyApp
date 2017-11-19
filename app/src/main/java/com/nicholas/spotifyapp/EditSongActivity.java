@@ -44,7 +44,9 @@ public class EditSongActivity extends Activity implements SensorEventListener{
     private long lastShakeTime;
     private SensorManager sensorManager;
 
-    private String miliToTimestamp(int mili) {
+    protected boolean isTest = false;
+
+    protected String miliToTimestamp(int mili) {
         String secs = Integer.toString(mili/1000 % 60);
         String mins = Integer.toString(mili / 60000);
         if (secs.length() == 1) {
@@ -128,7 +130,9 @@ public class EditSongActivity extends Activity implements SensorEventListener{
     @Override
     protected void onPause() {
         // save song details
-        UserState.editSong(playlistId, ResponseTransferHelper.getInstance().getEditingSong(), String.valueOf(startBar.getProgress()), String.valueOf(endBar.getProgress()));
+        if(!isTest) {
+            UserState.editSong(playlistId, ResponseTransferHelper.getInstance().getEditingSong(), String.valueOf(startBar.getProgress()), String.valueOf(endBar.getProgress()));
+        }
         sensorManager.unregisterListener(this);
         super.onPause();
     }

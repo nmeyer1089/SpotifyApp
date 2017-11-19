@@ -20,6 +20,12 @@ public class ResponseTransferHelper {
     }
 
     private ResponseTransferHelper() {
+        editingSong = new SongModel();
+        editingSong.name = "testName";
+        editingSong.album = "testAlbum";
+        editingSong.artist = "testArtist";
+        editingSong.durationMs = 10000;
+        editingSong.id = "testSongId";
     }
 
     public void addPair(String key, String response) {
