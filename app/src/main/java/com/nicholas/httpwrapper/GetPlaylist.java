@@ -49,6 +49,7 @@ public class GetPlaylist extends OkHttpWrapper{
         Intent intent = new Intent(caller, EditPlaylistActivity.class);
         ResponseTransferHelper.getInstance().addPair(PLAYLIST_JSON_KEY, response);
         caller.startActivity(intent);
-        return;
+
+        caller = null;
     }
 }

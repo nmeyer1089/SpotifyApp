@@ -2,6 +2,7 @@ package com.nicholas.httpwrapper;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 
 import com.nicholas.spotifyapp.PlaylistsActivity;
 
@@ -30,6 +31,8 @@ public class GetPlaylists extends OkHttpWrapper {
         Intent intent = new Intent(caller, PlaylistsActivity.class);
         ResponseTransferHelper.getInstance().addPair(PLAYLISTS_JSON_KEY, response);
         caller.startActivity(intent);
-        return;
+
+        Log.e("GetPlaylists","Setting caller to null");
+        caller = null;
     }
 }
