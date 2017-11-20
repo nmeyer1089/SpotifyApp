@@ -94,18 +94,7 @@ public class EditSongActivity extends Activity implements SensorEventListener{
         currProgBar = progressBar;
         currEndBut = setEndBut;
         currStartBut = setStartBut;
-        setStartBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startBar.setProgress((int) PlayerState.getPositionMs());
-            }
-        });
-        setEndBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                endBar.setProgress((int) PlayerState.getPositionMs());
-            }
-        });
+
         if (editingSong == PlayerState.playingSong) {
             setStartBut.setEnabled(true);
             setEndBut.setEnabled(true);
@@ -117,13 +106,14 @@ public class EditSongActivity extends Activity implements SensorEventListener{
         }
 
         // hook up seekbar listener
-        SeekBar.OnSeekBarChangeListener listener = new SeekBar.OnSeekBarChangeListener() {
+        final SeekBar.OnSeekBarChangeListener listener = new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 switch(seekBar.getId()) {
                     case R.id.start_seek:
                         startLabel.setText(miliToTimestamp(progress));
                         break;
+
                     case R.id.end_seek:
                         endLabel.setText(miliToTimestamp(progress));
                         break;
@@ -148,11 +138,25 @@ public class EditSongActivity extends Activity implements SensorEventListener{
                         }
                         break;
                 }
-                //UserState.editSong(playlistId, editingSong, String.valueOf(startBar.getProgress()), String.valueOf(endBar.getProgress()));
             }
         };
         startBar.setOnSeekBarChangeListener(listener);
         endBar.setOnSeekBarChangeListener(listener);
+
+        setStartBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startBar.setProgress((int) PlayerState.getPositionMs());
+                listener.onStopTrackingTouch(startBar);
+            }
+        });
+        setEndBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                endBar.setProgress((int) PlayerState.getPositionMs());
+                listener.onStopTrackingTouch(endBar);
+            }
+        });
 
         // register SensorManager
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
