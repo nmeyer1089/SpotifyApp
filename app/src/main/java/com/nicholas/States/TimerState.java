@@ -3,6 +3,8 @@ package com.nicholas.States;
 import android.os.CountDownTimer;
 import android.util.Log;
 
+import com.nicholas.spotifyapp.EditSongActivity;
+
 import java.util.concurrent.Callable;
 
 import static android.content.ContentValues.TAG;
@@ -28,6 +30,7 @@ public class TimerState {
 
             public void onTick(long millisUntilFinished) {
                 PlayerState.elapsedTimeSec+=1;
+                EditSongActivity.setProgressBar((int) (PlayerState.getPositionMs() / (float) PlayerState.playingSong.durationMs * 100));
             }
             public void onFinish() {
                 try {

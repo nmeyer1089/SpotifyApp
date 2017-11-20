@@ -12,7 +12,9 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -32,6 +34,10 @@ import java.util.concurrent.TimeUnit;
 import static com.nicholas.httpwrapper.GetPlaylist.PLAYLIST_JSON_KEY;
 
 public class EditSongActivity extends Activity implements SensorEventListener{
+
+    private static ProgressBar currProgBar;
+    private static Button currStartBut;
+    private static Button currEndBut;
 
     private static int window = 3000;
     private String playlistId = "";
@@ -80,6 +86,35 @@ public class EditSongActivity extends Activity implements SensorEventListener{
         endBar.setProgress(editingSong.endTime);
         startLabel.setText(miliToTimestamp(editingSong.startTime));
         endLabel.setText(miliToTimestamp(editingSong.endTime));
+
+        //set up buttons
+        final Button setStartBut = (Button) findViewById(R.id.set_start_but);
+        final Button setEndBut = (Button) findViewById(R.id.set_end_but);
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.song_progress);
+        currProgBar = progressBar;
+        currEndBut = setEndBut;
+        currStartBut = setStartBut;
+        setStartBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startBar.setProgress((int) PlayerState.getPositionMs());
+            }
+        });
+        setEndBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                endBar.setProgress((int) PlayerState.getPositionMs());
+            }
+        });
+        if (editingSong == PlayerState.playingSong) {
+            setStartBut.setEnabled(true);
+            setEndBut.setEnabled(true);
+            progressBar.setEnabled(true);
+        } else {
+            setStartBut.setEnabled(false);
+            setEndBut.setEnabled(false);
+            progressBar.setEnabled(false);
+        }
 
         // hook up seekbar listener
         SeekBar.OnSeekBarChangeListener listener = new SeekBar.OnSeekBarChangeListener() {
@@ -177,4 +212,17 @@ public class EditSongActivity extends Activity implements SensorEventListener{
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
+    public static void setProgressBar(int percent) {
+        if (currProgBar != null) {
+            currProgBar.setProgress(percent);
+        }
+    }
+    public static void setButtonsEnabled(boolean b) {
+        if (currEndBut != null && currStartBut != null && currProgBar != null) {
+            currStartBut.setEnabled(b);
+            currEndBut.setEnabled(b);
+            currProgBar.setEnabled(b);
+        }
+    }
 }
