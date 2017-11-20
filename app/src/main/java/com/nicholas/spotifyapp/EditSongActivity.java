@@ -49,6 +49,7 @@ public class EditSongActivity extends Activity implements SensorEventListener{
     private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 3000;
     private long lastShakeTime;
     private SensorManager sensorManager;
+    private static String songId = "";
 
     protected boolean isTest = false;
 
@@ -69,6 +70,7 @@ public class EditSongActivity extends Activity implements SensorEventListener{
         // get info
         playlistId = ResponseTransferHelper.getInstance().getValue("playlistId");
         final SongModel editingSong = ResponseTransferHelper.getInstance().getEditingSong();
+        songId = editingSong.id;
         final int editingPos = ResponseTransferHelper.getInstance().getEditingPosition();
 
         // set song name text
@@ -218,8 +220,14 @@ public class EditSongActivity extends Activity implements SensorEventListener{
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     public static void setProgressBar(int percent) {
-        if (currProgBar != null) {
-            currProgBar.setProgress(percent);
+        if(songId.equals(PlayerState.playingSong.id)) {
+            if (currProgBar != null) {
+                currProgBar.setProgress(percent);
+            }
+        } else {
+            if(currProgBar != null) {
+                currProgBar.setProgress(0);
+            }
         }
     }
     public static void setButtonsEnabled(boolean b) {
