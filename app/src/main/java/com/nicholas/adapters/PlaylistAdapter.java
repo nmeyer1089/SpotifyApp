@@ -86,7 +86,9 @@ public class PlaylistAdapter extends ArrayAdapter<SongModel> {
     public static void updateSelection(String lastId, String songId) {
 
         if(!lastId.equals("")) {
-            cvMap.get(lastId).setBackgroundColor(Color.WHITE);
+            if(cvMap.containsKey(lastId)) {
+                cvMap.get(lastId).setBackgroundColor(Color.WHITE);
+            }
         }
         cvMap.get(songId).setBackgroundColor(Color.rgb(178,232,240));
     }
